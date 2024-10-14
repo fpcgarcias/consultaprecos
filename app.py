@@ -1,14 +1,15 @@
 import streamlit as st
 import requests
 from requests.auth import HTTPBasicAuth
+import os  # Adicionado para acessar variáveis de ambiente
 
 def buscar_dados_da_api(codigo_usuario):
     # URL da primeira API
     url_primeira_api = f"http://177.85.161.176:6017/api/millenium/codigo_barras/busca_barra?barra={codigo_usuario}&$format=json"
     
-    # Nome de usuário e senha para a primeira API
-    usuario = "integracaobi"
-    senha = "@OLPd&mn23#"
+    # Nome de usuário e senha vindos das variáveis de ambiente (secrets do Streamlit)
+    usuario = os.getenv("API_USER")
+    senha = os.getenv("API_PASSWORD")
     
     try:
         resposta_primeira_api = requests.get(url_primeira_api, auth=HTTPBasicAuth(usuario, senha))
@@ -63,9 +64,9 @@ def main():
                         # URL da segunda API
                         url_segunda_api = f"http://177.85.161.176:6017/api/millenium_eco/produtos/precodetabela?produto={produto}&vitrine=201&$format=json"
                         
-                        # Nome de usuário e senha fixos
-                        usuario = "integracaobi"
-                        senha = "@OLPd&mn23#"
+                        # Nome de usuário e senha vindos das variáveis de ambiente
+                        usuario = os.getenv("API_USER")
+                        senha = os.getenv("API_PASSWORD")
 
                         try:
                             # Fazendo a requisição GET para a segunda API
